@@ -10,7 +10,7 @@ First, install a user script manager such as [Tampermonkey](https://tampermonkey
 
 ### Workflowy quick create
 
-[Install](https://github.com/mivok/workflowy-userscripts/raw/master/quickCreate.user.js)
+[Install](https://github.com/chroju/workflowy-userscripts/raw/master/quickCreate.user.js)
 
 ![Quick create demo screencast](demos/quickcreate_demo.gif)
 
@@ -24,7 +24,7 @@ There is also a keyboard shortcut you can use: CTRL+SHIFT+N.
 
 ### Workflowy journal
 
-[Install](https://github.com/mivok/workflowy-userscripts/raw/master/journal.user.js)
+[Install](https://github.com/chroju/workflowy-userscripts/raw/master/journal.user.js)
 
 ![Journal demo screencast](demos/journal_demo.gif)
 
@@ -36,7 +36,7 @@ There is also a keyboard shortcut you can use: CTRL+SHIFT+J.
 
 ### Workflowy tabs
 
-[Install](https://github.com/mivok/workflowy-userscripts/raw/master/tabs.user.js)
+[Install](https://github.com/chroju/workflowy-userscripts/raw/master/tabs.user.js)
 
 ![Tabs demo screencast](demos/tabs_demo.gif)
 
