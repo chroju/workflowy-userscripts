@@ -12,7 +12,7 @@
 // @run-at       document-end
 // ==/UserScript==
 
-(function() {
+(function () {
     'use strict';
     // Utility functions
 
@@ -80,7 +80,7 @@
     // Example: const newItem = findOrCreate(myItem, 'Some Title')
     function findOrCreateItem(parent, name) {
         for (const candidateItem of parent.getChildren()) {
-            if (candidateItem.getName() == name) {
+            if (candidateItem.getName().indexOf(name) != -1) {
                 return candidateItem;
             }
         }
@@ -117,7 +117,7 @@
             button.className = 'extension_button';
             const buttonCss = `
             .extension_button:hover {
-                background-color: rgb(236, 238, 240);
+                background-color: rgb(66, 72, 75);
             }
             .extension_button {
                 font-weight: bold;
@@ -144,14 +144,26 @@
         });
     }
 
+    function getToday() {
+        const todayDate = new Date();
+        const offset = todayDate.getTimezoneOffset();
+        return new Date(todayDate.getTime() - (offset * 60 * 1000));
+    }
+
     // Get today's date in YYYY-MM-DD format
     //
     // Example: const todayStr = getTodayString(); // YYYY-MM-DD
-    function getTodayString() {
-        const todayDate = new Date();
-        const offset = todayDate.getTimezoneOffset();
-        const offsetDate = new Date(todayDate.getTime() - (offset*60*1000));
-        return offsetDate.toISOString().split('T')[0];
+    function getTodayString(date) {
+        const dateStrings = date.toUTCString().split(' ');
+        return dateStrings[0] + ' ' + dateStrings[2] + ' ' + dateStrings[1] + ', ' + dateStrings[3] + ' ';
+    }
+
+    function getMonthString(date) {
+        return date.toISOString().slice(0, 7);
+    }
+
+    function getTimeString(date) {
+        return ('0' + date.getUTCHours()).slice(-2) + ':' + ('0' + date.getUTCMinutes()).slice(-2);
     }
 
     // Set multiple styles at once
@@ -179,10 +191,11 @@
             WF.showMessage(`Unable to find journal root item`, true);
             return;
         }
-        const todayStr = getTodayString(); // YYYY-MM-DD
-        const monthStr = todayStr.slice(0,7); // YYYY-MM
+        const today = getToday();
+        const todayStr = getTodayString(today);
+        const monthStr = getMonthString(today);
         // Create child item
-        WF.editGroup(function() {
+        WF.editGroup(function () {
             // Find the month item
             const monthItem = findOrCreateItem(journalItem, monthStr);
             const todayItem = findOrCreateItem(monthItem, todayStr);
@@ -192,13 +205,45 @@
         });
     }
 
+    function createInterstitialItem() {
+        const journalItem = findTaggedItem(WF.rootItem(), journalItemTag);
+        if (!journalItem) {
+            WF.showMessage(`Unable to find journal root item`, true);
+            return;
+        }
+        const today = getToday();
+        const todayStr = getTodayString(today);
+        const monthStr = getMonthString(today);
+        const timeStr = getTimeString(today);
+        // Create child item
+        WF.editGroup(function () {
+            // Find the month item
+            const monthItem = findOrCreateItem(journalItem, monthStr);
+            const todayItem = findOrCreateItem(monthItem, todayStr);
+            const timeItem = findOrCreateItem(todayItem, timeStr);
+            const target = findOrCreateItem(timeItem, '');
+            // Select the item and put the cursor in the right place
+            WF.zoomTo(todayItem);
+            WF.moveItems([timeItem], todayItem, 999);
+            WF.expandItem(timeItem);
+            WF.editItemName(timeItem);
+        });
+    }
+
     // Pencil symbol
     addButton('&#9998;', createJournalItem);
     // Add keyboard shortcut
     document.addEventListener("keydown", function (event) {
         if (!event.altKey && event.shiftKey &&
-                event.ctrlKey && !event.metaKey && event.key === "J") {
+            event.ctrlKey && !event.metaKey && event.key === "J") {
             createJournalItem();
+            event.preventDefault();
+        }
+    });
+    document.addEventListener("keydown", function (event) {
+        if (!event.altKey && event.shiftKey &&
+            event.ctrlKey && !event.metaKey && event.key === "I") {
+            createInterstitialItem();
             event.preventDefault();
         }
     });
