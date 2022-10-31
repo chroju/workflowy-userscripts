@@ -80,7 +80,7 @@
     // Example: const newItem = findOrCreate(myItem, 'Some Title')
     function findOrCreateItem(parent, name) {
         for (const candidateItem of parent.getChildren()) {
-            if (candidateItem.getName().indexOf(name) != -1) {
+            if (candidateItem.getName().indexOf(name.trim()) != -1) {
                 return candidateItem;
             }
         }
@@ -159,7 +159,8 @@
     }
 
     function getMonthString(date) {
-        return date.toISOString().slice(0, 7);
+        const monthStrings = date.toUTCString().split(' ');
+        return monthStrings[2] + ' ' + monthStrings[3];
     }
 
     function getTimeString(date) {
