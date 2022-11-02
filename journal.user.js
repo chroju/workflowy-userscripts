@@ -155,7 +155,7 @@
     // Example: const todayStr = getTodayString(); // YYYY-MM-DD
     function getTodayString(date) {
         const dateStrings = date.toUTCString().split(' ');
-        return dateStrings[0] + ' ' + dateStrings[2] + ' ' + dateStrings[1] + ', ' + dateStrings[3] + ' ';
+        return dateStrings[0] + ' ' + dateStrings[2] + ' ' + date.getUTCDate() + ', ' + dateStrings[3] + ' ';
     }
 
     function getMonthString(date) {
