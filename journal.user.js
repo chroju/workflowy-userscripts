@@ -167,6 +167,19 @@
         return ('0' + date.getUTCHours()).slice(-2) + ':' + ('0' + date.getUTCMinutes()).slice(-2);
     }
 
+    function getWeekNum(date){
+        const today = new Date();
+        const firstDate = new Date(`${today.getFullYear()}-01-01T00:00:00.000Z`);
+        const firstDateDay = firstDate.getDay() == 0 ? 7 : firstDate.getDay();
+        const firstWeekLastDate = 8 - firstDateDay;
+
+        const NthDayToday = Math.floor((today.getTime() - firstDate.getTime())/(24 * 60 * 60 * 1000) + 1);
+        const weekNum = Math.ceil((NthDayToday - firstWeekLastDate)/7) +1;
+
+
+        return `W${('0' + weekNum).slice(-2)}`;
+    }
+
     // Set multiple styles at once
     function setStyle(elem, styles) {
         for (let style in styles) {
@@ -194,12 +207,13 @@
         }
         const today = getToday();
         const todayStr = getTodayString(today);
-        const monthStr = getMonthString(today);
+       //  const monthStr = getMonthString(today);
+        const wnStr = getWeekNum(today);
         // Create child item
         WF.editGroup(function () {
             // Find the month item
-            const monthItem = findOrCreateItem(journalItem, monthStr);
-            const todayItem = findOrCreateItem(monthItem, todayStr);
+            const weekItem = findOrCreateItem(journalItem, wnStr);
+            const todayItem = findOrCreateItem(weekItem, todayStr);
             // Select the item and put the cursor in the right place
             WF.zoomTo(todayItem);
             WF.editItemName(todayItem);
@@ -214,13 +228,14 @@
         }
         const today = getToday();
         const todayStr = getTodayString(today);
-        const monthStr = getMonthString(today);
+       //  const monthStr = getMonthString(today);
+        const wnStr = getWeekNum(today);
         const timeStr = getTimeString(today);
         // Create child item
         WF.editGroup(function () {
             // Find the month item
-            const monthItem = findOrCreateItem(journalItem, monthStr);
-            const todayItem = findOrCreateItem(monthItem, todayStr);
+            const weekItem = findOrCreateItem(journalItem, wnStr);
+            const todayItem = findOrCreateItem(weekItem, todayStr);
             const timeItem = findOrCreateItem(todayItem, timeStr);
             const target = findOrCreateItem(timeItem, '');
             // Select the item and put the cursor in the right place
