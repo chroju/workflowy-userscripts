@@ -169,15 +169,15 @@
 
     function getWeekNum(date){
         const today = new Date();
-        const firstDate = new Date(`${today.getFullYear()}-01-01T00:00:00.000Z`);
+        const year = today.getFullYear()
+        const firstDate = new Date(`${year}-01-01T00:00:00.000Z`);
         const firstDateDay = firstDate.getDay() == 0 ? 7 : firstDate.getDay();
         const firstWeekLastDate = 8 - firstDateDay;
 
         const NthDayToday = Math.floor((today.getTime() - firstDate.getTime())/(24 * 60 * 60 * 1000) + 1);
         const weekNum = Math.ceil((NthDayToday - firstWeekLastDate)/7) +1;
 
-
-        return `W${('0' + weekNum).slice(-2)}`;
+        return `${year} W${('0' + weekNum).slice(-2)}`;
     }
 
     // Set multiple styles at once
