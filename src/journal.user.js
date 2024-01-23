@@ -148,11 +148,12 @@
         return new Date(todayDate.getTime() - (offset * 60 * 1000));
     }
 
-    // Get today's date in YYYY-MM-DD format
+    // Get today's date in ddd, MMM DD, YYYY format
     //
-    // Example: const todayStr = getTodayString(); // YYYY-MM-DD
+    // Example: const todayStr = getTodayString(); // Sun, Jan 21, 2024
     function getTodayString(date) {
-        return date.toISOString().split('T')[0];
+        const dateStrings = date.toUTCString().split(' ');
+        return dateStrings[0] + ' ' + dateStrings[2] + ' ' + date.getUTCDate() + ', ' + dateStrings[3] + ' ';
     }
 
     function getMonthString(date) {
