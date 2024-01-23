@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Workflowy Journal
 // @namespace    https://github.com/chroju
-// @version      0.0.2
+// @version      0.0.3
 // @description  Quickly create/select a daily journal item
 // @author       chroju
 // @match        https://workflowy.com/*
